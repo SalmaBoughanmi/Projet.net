@@ -4,7 +4,9 @@ namespace ProjetPFE.Dto
 {
     public class DemandeForUpdateDto
     {
-       // public int demande_id { get; set; }
+        internal object affectation;
+
+        // public int demande_id { get; set; }
         public int employe_id { get; set; }
         public int offre_id { get; set; }
         public int nb_a_exp { get; set; }
@@ -23,7 +25,7 @@ namespace ProjetPFE.Dto
         public string? motif_ds { get; set; }
         public string? collaborateur_remp { get; set; }
         //public DateTime date_creation { get; set; }
-        public string? affectation { get; set; }
+        //public string? affectation { get; set; }
 
 
     }

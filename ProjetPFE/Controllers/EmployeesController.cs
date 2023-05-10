@@ -83,7 +83,7 @@ namespace ProjetPFE.Controllers
             {
                 return BadRequest("Unable to add employe.");
             }
-            return Ok("Employe added successfully.");
+            return Ok(rowsAffected);
 
         }
 

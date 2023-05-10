@@ -26,7 +26,7 @@ public class demande
     //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
     //public DateTime date_creation { get; set; }
     public string? affectation { get; set; }
-    public List<employe>? Employees { get; set; }
+    //public virtual List<employe>? Employees { get; set; }
 
 
 

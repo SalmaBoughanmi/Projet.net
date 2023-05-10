@@ -74,32 +74,48 @@ namespace ProjetPFE.Controllers
         }
 
 
-        
+
         [HttpPost]
-        public async Task<IActionResult> CreateDemande([FromForm] DemandeForCreationDto DemandeForCreationDto)
+        public async Task<IActionResult> CreateDemande(DemandeForCreationDto demande)
         {
             try
             {
-                // Vérifier si les données de la demande sont valides
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                // Mapper la demande à partir du DTO
-                var nouvelleDemande = _mapper.Map<DemandeForCreationDto>(DemandeForCreationDto);
-
-                // Enregistrer la demande dans la base de données
-                var createdDemande = await _demandeRepo.CreateDemande(nouvelleDemande);
-
-                return CreatedAtRoute("demandeById", new { demande_id = createdDemande.demande_id }, createdDemande);
+                var createdemande = await _demandeRepo.CreateDemande(demande);
+                return CreatedAtRoute("demandeById", new { demande_id = createdemande.demande_id }, createdemande);
             }
             catch (Exception ex)
             {
-                // Log error
+                //log error
                 return StatusCode(500, ex.Message);
             }
         }
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> CreateDemande([FromForm] DemandeForCreationDto DemandeForCreationDto)
+        //{
+        //    try
+        //    {
+        //        // Vérifier si les données de la demande sont valides
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+
+        //        // Mapper la demande à partir du DTO
+        //        var nouvelleDemande = _mapper.Map<DemandeForCreationDto>(DemandeForCreationDto);
+
+        //        // Enregistrer la demande dans la base de données
+        //        var createdDemande = await _demandeRepo.CreateDemande(nouvelleDemande);
+
+        //        return CreatedAtRoute("demandeById", new { demande_id = createdDemande.demande_id }, createdDemande);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log error
+        //        return StatusCode(500, ex.Message);
+        //    }
+        //}
 
 
 

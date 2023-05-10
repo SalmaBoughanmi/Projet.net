@@ -47,55 +47,32 @@ namespace ProjetPFE.Repository
 
 
 
-        public async Task<demande> CreateDemande(DemandeForCreationDto DemandeForCreationDto)
+
+        public async Task<demande> CreateDemande(DemandeForCreationDto demande)
         {
-            var query = "INSERT INTO demande ( offre_id, employe_id,  nb_a_exp, type_demande, titre_fonction, nature_contrat, lien_fichier, " +
-                "nom_fichier, remarque, statut_chef, statut_rh, statut_ds, motif_chef, motif_rh, motif_ds, collaborateur_remp, " +
-                " affectation ) VALUES (@offre_id, @employe_id,  @nb_a_exp, @type_demande, @titre_fonction, @nature_contrat, " +
-                "@lien_fichier, @nom_fichier, @remarque, @statut_chef, @statut_rh, @statut_ds, @motif_chef, @motif_rh, @motif_ds," +
-                " @collaborateur_remp, @affectation)" + "SELECT CAST(SCOPE_IDENTITY() as int)";
+            var query = "INSERT INTO demande ( offre_id, employe_id,  nb_a_exp, type_demande, titre_fonction, nature_contrat,  " +
+                 " remarque, statut_chef, statut_rh, statut_ds, motif_chef, motif_rh, motif_ds, collaborateur_remp) " +
+                 "VALUES (@offre_id, @employe_id,  @nb_a_exp, @type_demande, @titre_fonction, @nature_contrat, " +
+                 " @remarque, @statut_chef, @statut_rh, @statut_ds, @motif_chef, @motif_rh, @motif_ds," +
+                 " @collaborateur_remp)" + "SELECT CAST(SCOPE_IDENTITY() as int)";
 
             var parameters = new DynamicParameters();
-            parameters.Add("offre_id", DemandeForCreationDto.offre_id, DbType.Int32);
-            parameters.Add("employe_id", DemandeForCreationDto.employe_id, DbType.Int32);
-            parameters.Add("nb_a_exp", DemandeForCreationDto.nb_a_exp, DbType.Int32);
-            parameters.Add("type_demande", DemandeForCreationDto.type_demande, DbType.String);
-            parameters.Add("titre_fonction", DemandeForCreationDto.titre_fonction, DbType.String);
-            parameters.Add("nature_contrat", DemandeForCreationDto.nature_contrat, DbType.String);
-            parameters.Add("remarque", DemandeForCreationDto.remarque, DbType.String);
-            parameters.Add("statut_chef", DemandeForCreationDto.statut_chef, DbType.String);
-            parameters.Add("statut_rh", DemandeForCreationDto.statut_rh, DbType.String);
-            parameters.Add("statut_ds", DemandeForCreationDto.statut_ds, DbType.String);
-            parameters.Add("motif_chef", DemandeForCreationDto.motif_chef, DbType.String);
-            parameters.Add("motif_rh", DemandeForCreationDto.motif_rh, DbType.String);
-            parameters.Add("motif_ds", DemandeForCreationDto.motif_ds, DbType.String);
-            parameters.Add("collaborateur_remp", DemandeForCreationDto.collaborateur_remp, DbType.String);
-            //parameters.Add("date_creation", DemandeForCreationDto.date_creation, DbType.String) ;
-            parameters.Add("affectation", DemandeForCreationDto.affectation, DbType.String);
-
-            if (DemandeForCreationDto.File != null && DemandeForCreationDto.File.Length > 0)
-            {
-                // Générer un nom de fichier unique
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(DemandeForCreationDto.File.FileName);
-
-                // Déterminer le chemin où enregistrer le fichier
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", fileName);
-
-                // Copier le fichier vers le serveur
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await DemandeForCreationDto.File.CopyToAsync(stream);
-                }
-
-                parameters.Add("lien_fichier", filePath, DbType.String);
-                parameters.Add("nom_fichier", fileName, DbType.String);
-                }
-            else
-               {
-               parameters.Add("lien_fichier", string.Empty, DbType.String);
-               parameters.Add("nom_fichier", string.Empty, DbType.String);
-               }
-            
+            parameters.Add("offre_id", demande.offre_id, DbType.Int32);
+            parameters.Add("employe_id", demande.employe_id, DbType.Int32);
+            parameters.Add("nb_a_exp", demande.nb_a_exp, DbType.Int32);
+            parameters.Add("type_demande", demande.type_demande, DbType.String);
+            parameters.Add("titre_fonction", demande.titre_fonction, DbType.String);
+            parameters.Add("nature_contrat", demande.nature_contrat, DbType.String);
+            parameters.Add("remarque", demande.remarque, DbType.String);
+            parameters.Add("statut_chef", demande.statut_chef, DbType.String);
+            parameters.Add("statut_rh", demande.statut_rh, DbType.String);
+            parameters.Add("statut_ds", demande.statut_ds, DbType.String);
+            parameters.Add("motif_chef", demande.motif_chef, DbType.String);
+            parameters.Add("motif_rh", demande.motif_rh, DbType.String);
+            parameters.Add("motif_ds", demande.motif_ds, DbType.String);
+            parameters.Add("collaborateur_remp", demande.collaborateur_remp, DbType.String);
+            //parameters.Add("date_creation", demande.date_creation, DbType.DateTime);
+            //parameters.Add("affectation", demande.affectation, DbType.String);
             
             using (var connection = _context.CreateConnection())
             {
@@ -104,28 +81,108 @@ namespace ProjetPFE.Repository
                 var createddemande = new demande
                 {
                     demande_id = id,
-                    offre_id = DemandeForCreationDto.offre_id,
-                    employe_id = DemandeForCreationDto.employe_id,
-                    nb_a_exp = DemandeForCreationDto.nb_a_exp,
-                    type_demande = DemandeForCreationDto.type_demande,
-                    titre_fonction = DemandeForCreationDto.titre_fonction,
-                    statut_chef = DemandeForCreationDto.statut_chef,
-                    statut_rh = DemandeForCreationDto.statut_rh,
-                    statut_ds = DemandeForCreationDto.statut_ds,
-                    remarque = DemandeForCreationDto.remarque,
-                    nature_contrat = DemandeForCreationDto.nature_contrat,
-                    motif_chef = DemandeForCreationDto.motif_chef,
-                    motif_rh = DemandeForCreationDto.motif_rh,
-                    motif_ds = DemandeForCreationDto.motif_ds,
-                    collaborateur_remp = DemandeForCreationDto.collaborateur_remp,
-                    //date_creation = DemandeForCreationDto.date_creation,
-                    affectation = DemandeForCreationDto.affectation,
+                    offre_id = demande.offre_id,
+                    employe_id = demande.employe_id,
+                    nb_a_exp = demande.nb_a_exp,
+                    type_demande = demande.type_demande,
+                    titre_fonction = demande.titre_fonction,
+                    statut_chef = demande.statut_chef,
+                    statut_rh = demande.statut_rh,
+                    statut_ds = demande.statut_ds,
+                    remarque = demande.remarque,
+                    nature_contrat = demande.nature_contrat,
+                    motif_chef = demande.motif_chef,
+                    motif_rh = demande.motif_rh,
+                    motif_ds = demande.motif_ds,
+                    collaborateur_remp = demande.collaborateur_remp,
+                    //date_creation = demande.date_creation,
+                    //affectation = demande.affectation,
 
                 };
                 return createddemande;
             }
         }
-    
+
+
+        // public async Task<demande> CreateDemande(DemandeForCreationDto DemandeForCreationDto)
+        //{
+        //    var query = "INSERT INTO demande ( offre_id, employe_id,  nb_a_exp, type_demande, titre_fonction, nature_contrat, lien_fichier, " +
+        //        "nom_fichier, remarque, statut_chef, statut_rh, statut_ds, motif_chef, motif_rh, motif_ds, collaborateur_remp, " +
+        //        " affectation ) VALUES (@offre_id, @employe_id,  @nb_a_exp, @type_demande, @titre_fonction, @nature_contrat, " +
+        //        "@lien_fichier, @nom_fichier, @remarque, @statut_chef, @statut_rh, @statut_ds, @motif_chef, @motif_rh, @motif_ds," +
+        //        " @collaborateur_remp, @affectation)" + "SELECT CAST(SCOPE_IDENTITY() as int)";
+
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("offre_id", DemandeForCreationDto.offre_id, DbType.Int32);
+        //    parameters.Add("employe_id", DemandeForCreationDto.employe_id, DbType.Int32);
+        //    parameters.Add("nb_a_exp", DemandeForCreationDto.nb_a_exp, DbType.Int32);
+        //    parameters.Add("type_demande", DemandeForCreationDto.type_demande, DbType.String);
+        //    parameters.Add("titre_fonction", DemandeForCreationDto.titre_fonction, DbType.String);
+        //    parameters.Add("nature_contrat", DemandeForCreationDto.nature_contrat, DbType.String);
+        //    parameters.Add("remarque", DemandeForCreationDto.remarque, DbType.String);
+        //    parameters.Add("statut_chef", DemandeForCreationDto.statut_chef, DbType.String);
+        //    parameters.Add("statut_rh", DemandeForCreationDto.statut_rh, DbType.String);
+        //    parameters.Add("statut_ds", DemandeForCreationDto.statut_ds, DbType.String);
+        //    parameters.Add("motif_chef", DemandeForCreationDto.motif_chef, DbType.String);
+        //    parameters.Add("motif_rh", DemandeForCreationDto.motif_rh, DbType.String);
+        //    parameters.Add("motif_ds", DemandeForCreationDto.motif_ds, DbType.String);
+        //    parameters.Add("collaborateur_remp", DemandeForCreationDto.collaborateur_remp, DbType.String);
+        //    //parameters.Add("date_creation", DemandeForCreationDto.date_creation, DbType.String) ;
+        //    parameters.Add("affectation", DemandeForCreationDto.affectation, DbType.String);
+
+        //    if (DemandeForCreationDto.File != null && DemandeForCreationDto.File.Length > 0)
+        //    {
+        //        // Générer un nom de fichier unique
+        //        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(DemandeForCreationDto.File.FileName);
+
+        //        // Déterminer le chemin où enregistrer le fichier
+        //        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", fileName);
+
+        //        // Copier le fichier vers le serveur
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            await DemandeForCreationDto.File.CopyToAsync(stream);
+        //        }
+
+        //        parameters.Add("lien_fichier", filePath, DbType.String);
+        //        parameters.Add("nom_fichier", fileName, DbType.String);
+        //        }
+        //    else
+        //       {
+        //       parameters.Add("lien_fichier", string.Empty, DbType.String);
+        //       parameters.Add("nom_fichier", string.Empty, DbType.String);
+        //       }
+
+
+        //    using (var connection = _context.CreateConnection())
+        //    {
+        //        var id = await connection.QuerySingleAsync<int>(query, parameters);
+
+        //        var createddemande = new demande
+        //        {
+        //            demande_id = id,
+        //            offre_id = DemandeForCreationDto.offre_id,
+        //            employe_id = DemandeForCreationDto.employe_id,
+        //            nb_a_exp = DemandeForCreationDto.nb_a_exp,
+        //            type_demande = DemandeForCreationDto.type_demande,
+        //            titre_fonction = DemandeForCreationDto.titre_fonction,
+        //            statut_chef = DemandeForCreationDto.statut_chef,
+        //            statut_rh = DemandeForCreationDto.statut_rh,
+        //            statut_ds = DemandeForCreationDto.statut_ds,
+        //            remarque = DemandeForCreationDto.remarque,
+        //            nature_contrat = DemandeForCreationDto.nature_contrat,
+        //            motif_chef = DemandeForCreationDto.motif_chef,
+        //            motif_rh = DemandeForCreationDto.motif_rh,
+        //            motif_ds = DemandeForCreationDto.motif_ds,
+        //            collaborateur_remp = DemandeForCreationDto.collaborateur_remp,
+        //            //date_creation = DemandeForCreationDto.date_creation,
+        //            affectation = DemandeForCreationDto.affectation,
+
+        //        };
+        //        return createddemande;
+        //    }
+        //}
+
 
         public async Task UpdateDemande(int demande_id, DemandeForUpdateDto demande)
     {
@@ -133,7 +190,7 @@ namespace ProjetPFE.Repository
             "lien_fichier = @lien_fichier, nom_fichier = @nom_fichier, statut_chef = @statut_chef, statut_rh = @statut_rh," +
             " statut_ds = @statut_ds, remarque = @remarque," +
             " nature_contrat = @nature_contrat, motif_chef = @motif_chef, motif_rh = @motif_rh, motif_ds = @motif_ds," +
-            " collaborateur_remp = @collaborateur_remp, affectation = @affectation WHERE demande_id = @demande_id";
+            " collaborateur_remp = @collaborateur_remp WHERE demande_id = @demande_id";
 
         var parameters = new DynamicParameters();
         parameters.Add("offre_id", demande.offre_id, DbType.Int32);
@@ -153,7 +210,7 @@ namespace ProjetPFE.Repository
         parameters.Add("motif_ds", demande.motif_ds, DbType.String);
         parameters.Add("collaborateur_remp", demande.collaborateur_remp, DbType.String);
         //parameters.Add("date_creation", demande.date_creation, DbType.DateTime) ;
-        parameters.Add("affectation", demande.affectation, DbType.String);
+       // parameters.Add("affectation", demande.affectation, DbType.String);
         parameters.Add("demande_id", demande_id, DbType.Int32);
 
 

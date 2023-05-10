@@ -26,8 +26,8 @@ namespace ProjetPFE.Dto
         
        // public DateTime date_creation { get; set; }
         public string? affectation { get; set; }
-        public List<employe>? Employees { get; set; }
-        public IFormFile? File { get; set; }
+       // public virtual List<employe>? Employees { get; set; }
+       // public IFormFile? File { get; set; }
 
 
 
