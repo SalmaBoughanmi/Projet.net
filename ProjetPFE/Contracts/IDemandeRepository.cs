@@ -18,8 +18,6 @@ namespace ProjetPFE.Contracts
 
         void ArchiverDemande(archive archive);
 
-
-
     }
 }
 
