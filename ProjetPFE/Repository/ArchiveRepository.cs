@@ -98,8 +98,7 @@ namespace ProjetPFE.Repository
             public async Task UpdateArchive(int archive_id, ArchiveForUpdateDto archive)
             {
                 var query = "UPDATE archive SET demande_id = @demande_id, employe_id = @employe_id  nb_a_exp = @nb_a_exp, type_demande = @type_demande, titre_fonction = @titre_fonction, " +
-                    "lien_fichier = @lien_fichier, nom_fichier = @nom_fichier, " +
-                    "  remarque = @remarque," +
+                    "lien_fichier = @lien_fichier, nom_fichier = @nom_fichier, remarque = @remarque," +
                     " nature_contrat = @nature_contrat, " +
                     " collaborateur_remp = @collaborateur_remp WHERE archive_id = @archive_id";
 
