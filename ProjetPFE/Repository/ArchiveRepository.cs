@@ -49,14 +49,15 @@ namespace ProjetPFE.Repository
 
             public async Task<archive> CreateArchive(ArchiveForCreationDto archive)
             {
-                var query = "INSERT INTO archive (  demande_id, nb_a_exp, type_demande, titre_fonction, nature_contrat, lien_fichier, " +
+                var query = "INSERT INTO archive (  demande_id, employe_id, nb_a_exp, type_demande, titre_fonction, nature_contrat, lien_fichier, " +
                     "nom_fichier, remarque,  collaborateur_remp, " +
-                    "date_creation, affectation ) VALUES (@demande_id, @nb_a_exp, @type_demande, @titre_fonction, @nature_contrat, " +
+                    "date_creation) VALUES (@demande_id, @employe_id, @nb_a_exp, @type_demande, @titre_fonction, @nature_contrat, " +
                     "@lien_fichier, @nom_fichier, @remarque, " +
-                    " @collaborateur_remp, @date_creation, @affectation)" + "SELECT CAST(SCOPE_IDENTITY() as int)";
+                    " @collaborateur_remp)" + "SELECT CAST(SCOPE_IDENTITY() as int)";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("demande_id", archive.demande_id, DbType.Int32);
+                parameters.Add("employe_id", archive.employe_id, DbType.Int32);
                 parameters.Add("nb_a_exp", archive.nb_a_exp, DbType.Int32);
                 parameters.Add("type_demande", archive.type_demande, DbType.String);
                 parameters.Add("titre_fonction", archive.titre_fonction, DbType.String);
@@ -65,8 +66,8 @@ namespace ProjetPFE.Repository
                 parameters.Add("nom_fichier", archive.nom_fichier, DbType.String);
                 parameters.Add("remarque", archive.remarque, DbType.String);
                 parameters.Add("collaborateur_remp", archive.collaborateur_remp, DbType.String);
-                parameters.Add("date_creation", archive.date_creation, DbType.DateTime);
-                parameters.Add("affectation", archive.affectation, DbType.String);
+               // parameters.Add("date_creation", archive.date_creation, DbType.DateTime);
+                //parameters.Add("affectation", archive.affectation, DbType.String);
 
                 using (var connection = _context.CreateConnection())
                 {
@@ -76,6 +77,7 @@ namespace ProjetPFE.Repository
                     {
                         archive_id = id,
                         demande_id = archive.demande_id,
+                        employe_id = archive.employe_id,
                         nb_a_exp = archive.nb_a_exp,
                         type_demande = archive.type_demande,
                         titre_fonction = archive.titre_fonction,
@@ -84,8 +86,8 @@ namespace ProjetPFE.Repository
                         remarque = archive.remarque,
                         nature_contrat = archive.nature_contrat,
                         collaborateur_remp = archive.collaborateur_remp,
-                        date_creation = archive.date_creation,
-                        affectation = archive.affectation,
+                       //date_creation = archive.date_creation,
+                        //affectation = archive.affectation,
 
                     };
                     return createdarchive;
@@ -95,15 +97,15 @@ namespace ProjetPFE.Repository
 
             public async Task UpdateArchive(int archive_id, ArchiveForUpdateDto archive)
             {
-                var query = "UPDATE archive SET demande_id = @demande_id,  nb_a_exp = @nb_a_exp, type_demande = @type_demande, titre_fonction = @titre_fonction, " +
+                var query = "UPDATE archive SET demande_id = @demande_id, employe_id = @employe_id  nb_a_exp = @nb_a_exp, type_demande = @type_demande, titre_fonction = @titre_fonction, " +
                     "lien_fichier = @lien_fichier, nom_fichier = @nom_fichier, " +
                     "  remarque = @remarque," +
                     " nature_contrat = @nature_contrat, " +
-                    " collaborateur_remp = @collaborateur_remp, " +
-                    "date_creation = @date_creation, affectation = @affectation WHERE archive_id = @archive_id";
+                    " collaborateur_remp = @collaborateur_remp WHERE archive_id = @archive_id";
 
                 var parameters = new DynamicParameters();
-            parameters.Add("demande_id", archive.demande_id, DbType.Int32);
+            parameters.Add("demande_id", archive.employe_id, DbType.Int32);
+            parameters.Add("employe_id", archive.employe_id, DbType.Int32);
             parameters.Add("archive_id", archive_id, DbType.Int32);
             parameters.Add("nb_a_exp", archive.nb_a_exp, DbType.Int32);
             parameters.Add("type_demande", archive.type_demande, DbType.String);
@@ -113,8 +115,8 @@ namespace ProjetPFE.Repository
             parameters.Add("nom_fichier", archive.nom_fichier, DbType.String);
             parameters.Add("remarque", archive.remarque, DbType.String);
             parameters.Add("collaborateur_remp", archive.collaborateur_remp, DbType.String);
-            parameters.Add("date_creation", archive.date_creation, DbType.DateTime);
-            parameters.Add("affectation", archive.affectation, DbType.String);
+            //parameters.Add("date_creation", archive.date_creation, DbType.DateTime);
+            //parameters.Add("affectation", archive.affectation, DbType.String);
 
             using (var connection = _context.CreateConnection())
                 {

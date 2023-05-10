@@ -3,7 +3,7 @@
     public class ArchiveForUpdateDto
     {
         //public int archive_id { get; set; }
-        public int demande_id { get; set; }
+        public int employe_id { get; set; }
         public int nb_a_exp { get; set; }
 
         public string? type_demande { get; set; }
