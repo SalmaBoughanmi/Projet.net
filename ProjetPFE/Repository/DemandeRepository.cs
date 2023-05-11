@@ -45,6 +45,17 @@ namespace ProjetPFE.Repository
         }
 
 
+        public async Task<IEnumerable<demande>> Getdem(int employe_id)
+        {
+            var query = "SELECT * FROM demande WHERE employe_id = @employe_id";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var dem = await connection.QueryAsync<demande>(query, new { employe_id });
+                return dem.ToList();
+            }
+        }
+
 
 
 

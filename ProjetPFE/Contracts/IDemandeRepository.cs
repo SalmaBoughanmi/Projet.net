@@ -9,6 +9,7 @@ namespace ProjetPFE.Contracts
 
         public Task<IEnumerable<demande>> Getdemandes();
         public Task<demande> GetDemande(int demande_id);
+        Task<IEnumerable<demande>> Getdem(int employe_id);
         public Task<demande> CreateDemande(DemandeForCreationDto demande);
         // public Task<demande> CreateDemande(DemandeForCreationDto DemandeForCreationDto);
         public Task UpdateDemande(int demande_id, DemandeForUpdateDto demande);

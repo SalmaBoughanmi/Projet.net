@@ -74,6 +74,19 @@ namespace ProjetPFE.Controllers
         }
 
 
+        [HttpGet("type/{employe_id}")]
+        public async Task<IActionResult> Getdem(int employe_id)
+        {
+            var dem = await _demandeRepo.Getdem(employe_id);
+
+            if (dem == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(dem);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateDemande(DemandeForCreationDto demande)

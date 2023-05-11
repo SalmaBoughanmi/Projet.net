@@ -7,6 +7,7 @@ namespace ProjetPFE.Contracts
     {
         Task<ICollection<employe>> Getemployes();
         Task<employe> GetEmployeByIdAsync(int id);
+        Task<IEnumerable<employe>> Getemp(string matricule);
         //Task<int> AddEmploye(employe employe);
         //Task<int> UpdateEmployeAsync(employe employe);
         Task<int> DeleteEmployeAsync(int id);

@@ -132,6 +132,19 @@ namespace ProjetPFE.Repository
         }
 
 
+
+        public async Task<IEnumerable<employe>> Getemp(string matricule)
+        {
+            var query = "SELECT * FROM employe WHERE matricule = @matricule";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var emp = await connection.QueryAsync<employe>(query, new { matricule });
+                return emp.ToList();
+            }
+        }
+
+
         public string GenerateSha256Hash(string input)
         {
             /* create salt */

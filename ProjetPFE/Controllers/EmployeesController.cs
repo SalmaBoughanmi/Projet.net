@@ -53,6 +53,19 @@ namespace ProjetPFE.Controllers
 
 
 
+        [HttpGet("type/{matricule}")]
+        public async Task<IActionResult> Getemp(string matricule)
+        {
+            var emp = await _employeRepository.Getemp(matricule);
+
+            if (emp == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(emp);
+        }
+
 
 
         //[HttpPost]
