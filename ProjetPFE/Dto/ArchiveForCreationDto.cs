@@ -1,7 +1,7 @@
 ﻿namespace ProjetPFE.Dto
 {
     public class ArchiveForCreationDto
-    {
+    { 
         
 
         //public int archive_id { get; set; }

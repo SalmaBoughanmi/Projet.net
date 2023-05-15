@@ -21,18 +21,21 @@ namespace ProjetPFE.Controllers
         private readonly IDemandeRepository _demandeRepo;
         private readonly IMapper _mapper;
         private readonly IStatutService _statutService;
-       // private readonly IArchiveRepository _archiveRepo;
+        private readonly IEmployeRepository _employeRepository;
+
+
+        // private readonly IArchiveRepository _archiveRepo;
 
 
 
 
 
-        public DemandesController(IDemandeRepository demandeRepo, IMapper mapper, IStatutService statutService)
+        public DemandesController(IDemandeRepository demandeRepo, IMapper mapper, IStatutService statutService, IEmployeRepository employeRepository)
         {
             _demandeRepo = demandeRepo;
             _mapper = mapper;
             _statutService = statutService;
-            
+            _employeRepository = employeRepository;
 
         }
 
@@ -55,23 +58,44 @@ namespace ProjetPFE.Controllers
 
 
 
-        [HttpGet("{demande_id}", Name = "demandeById")]
-        public async Task<IActionResult> GetDemande(int demande_id)
-        {
-            try
-            {
-                var demande = await _demandeRepo.GetDemande(demande_id);
-                if (demande == null)
-                    return NotFound();
+        //[HttpGet("{demande_id}", Name = "demandeById")]
+        //public async Task<IActionResult> GetDemande(int demande_id)
+        //{
+        //    try
+        //    {
+        //        var demande = await _demandeRepo.GetDemande(demande_id);
+        //        if (demande == null)
+        //            return NotFound();
 
-                return Ok(demande);
-            }
-            catch (Exception ex)
-            {
-                //log error
-                return StatusCode(500, ex.Message);
-            }
-        }
+        //        return Ok(demande);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //log error
+        //        return StatusCode(500, ex.Message);
+        //    }
+        //}
+
+
+
+
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<demande>> Getdem(int id)
+        //{
+        //    var demande = await _demandeRepo.Getdem(id);
+
+        //    if (demande == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return demande;
+        //}
+
+
+
+
+
 
 
         [HttpGet("type/{employe_id}")]
@@ -214,6 +238,35 @@ namespace ProjetPFE.Controllers
             return Ok(statutDemande.ToString());
         }
 
+
+
+        [HttpGet("{TraiterDemandeChef}")]
+        public async Task<IActionResult> TraiterDemandeChef(int demande_id,bool Etat,string NoteChef)
+        {
+            var dbdemande = await _demandeRepo.GetDemande(demande_id);
+            if (dbdemande == null)
+                return NotFound();
+            if (!dbdemande.statut_chef.Equals("en attente"))
+            {
+                return BadRequest("cette demande est Déjà traitée.");
+            }
+
+            // var statutDemande = _statutService.GetStatutDemande(statutChef, statutRh, statutDs);
+            if (Etat)
+            {
+                employe employe =  _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);              
+                string Subject = "Demande N° "+ dbdemande.demande_id + " a été accepté ";
+                Utilities.SendMail(employe.email, Subject, NoteChef);
+              //  await _demandeRepo.GetDemande(demande_id);
+            }
+            else
+            {
+                employe employe = _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);
+                string Subject = "Demande N° " + dbdemande.demande_id + " a été refusé  ";
+                Utilities.SendMail(employe.email, Subject, NoteChef);
+            }
+            return Ok();
+        }
 
 
 

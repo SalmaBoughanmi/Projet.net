@@ -7,6 +7,8 @@ using ProjetPFE.Contracts.services;
 using ProjetPFE.Dto;
 using ProjetPFE.Entities;
 using ProjetPFE.Repository;
+using System.Net;
+using System.Net.Mail;
 
 namespace ProjetPFE.Controllers
 {
@@ -32,12 +34,12 @@ namespace ProjetPFE.Controllers
         [HttpGet]
         public async Task<ActionResult<ICollection<employe>>> RetrieveAllEmploye()
         {
+          
             var employes = await this.employeService.RetrieveEmployes();
             return Ok(employes);
         }
 
-
-
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<employe>> GetEmployeByIdAsync(int id)
         {
@@ -87,6 +89,7 @@ namespace ProjetPFE.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmploye([FromBody] EmployeForCreationDto employe)
         {
+
             if (employe == null)
             {
                 return BadRequest();
@@ -96,6 +99,10 @@ namespace ProjetPFE.Controllers
             {
                 return BadRequest("Unable to add employe.");
             }
+
+             Utilities.SendMail(employe.email, "Nouveau compte ", $"Bonjour {employe.nom } {employe.prenom},{Environment.NewLine} Votre compte  sur la plateforme  Gestion de Recrutement a été crée par l'administrateur.{Environment.NewLine}Email d'utilisateur: {employe.email}{Environment.NewLine}Mot de passe: {employe.password}{Environment.NewLine}{Environment.NewLine}Cordialement,{Environment.NewLine}Équipe TIS Circuits ");
+           
+
             return Ok(rowsAffected);
 
         }

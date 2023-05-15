@@ -14,7 +14,7 @@ namespace ProjetPFE.Contracts
         Task<employe?> Login(string email, string password);
         Task<int> AddEmploye(EmployeForCreationDto employe);
         Task<int> UpdateEmployeAsync(Empl employe);
-
+        employe GetEmployeByIdDemande(int id);
         //public Task DeleteEmploye(int employe_id);
 
         //public Task<employe> CreateEmploye(EmployeForCreationDto employe);

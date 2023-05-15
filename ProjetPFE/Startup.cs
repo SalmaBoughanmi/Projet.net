@@ -17,12 +17,27 @@ namespace ProjetPFE
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<FormOptions>(o => {
+           
+
+        // in Configure
+       
+        services.Configure<FormOptions>(o => {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "AllowOrigin",
+                    builder => {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
+            });
+        
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
      {
          options.TokenValidationParameters = new TokenValidationParameters
@@ -40,7 +55,10 @@ namespace ProjetPFE
             services.AddControllers();
             services.AddRazorPages();
         }
-
+        //public void Configure(IApplicationBuilder app)
+        //{
+        //    app.UseCors("AllowOrigin");
+        //}
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -54,7 +72,7 @@ namespace ProjetPFE
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseCors("AllowOrigin");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

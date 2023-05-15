@@ -12,6 +12,9 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Drawing;
 using ProjetPFE.Dto;
+using System.Net.Mail;
+using System.Net;
+using System.Runtime.Intrinsics.Arm;
 
 namespace ProjetPFE.Repository
 {
@@ -388,10 +391,10 @@ namespace ProjetPFE.Repository
 
 
 
+  
 
 
-
-       public async Task<int> DeleteEmployeAsync(int id)
+        public async Task<int> DeleteEmployeAsync(int id)
         {
             var existingEmploye = GetEmployeByIdAsync(id);
            if (existingEmploye == null)
@@ -604,7 +607,22 @@ namespace ProjetPFE.Repository
 
 
 
+        public  employe GetEmployeByIdDemande(int id)
+        {
+            var query = @"SELECT employe.employe_id, employe.nom, employe.prenom, employe.matricule, employe.matricule_resp, 
+                  employe.fonction, employe.role, employe.date_recrutement, employe.email, employe.password                 
+                  FROM [dbo].[employe] as employe                  
+                  WHERE employe.employe_id = @id";
 
+
+            employe employe = new employe();
+            using (var _context = this._context.CreateConnection())
+            {
+                return  _context.QueryFirstOrDefault<employe>(query, new { id });
+
+            }
+          
+        }
 
 
         public async Task<int> UpdateEmployeAsync(Empl emp)
