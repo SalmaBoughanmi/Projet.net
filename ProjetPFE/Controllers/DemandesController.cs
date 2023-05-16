@@ -113,6 +113,79 @@ namespace ProjetPFE.Controllers
 
 
 
+        [Route("TraiterDemandeChef/")]
+        [HttpGet]
+        public async Task<IActionResult> TraiterDemandeChef(int demande_id, bool Etat, string NoteChef)
+        {
+            var dbdemande = await _demandeRepo.GetDemande(demande_id);
+            if (dbdemande == null)
+                return NotFound();
+            if (!dbdemande.statut_rh.Equals("en attente"))
+            {
+                //  return BadRequest("cette demande est Déjà traitée.");
+                return Ok("cette demande est Déjà traitée ");
+            }
+
+            // var statutDemande = _statutService.GetStatutDemande(statutChef, statutRh, statutDs);
+            if (Etat)
+            {
+                employe employe = _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);
+                string Subject = "Demande N° " + dbdemande.demande_id + " a été acceptée ";
+                Utilities.SendMail(employe.email, Subject, NoteChef);
+                //  await _demandeRepo.GetDemande(demande_id);
+
+                DemandeForUpdateDto demande = new DemandeForUpdateDto
+                {
+                    employe_id = dbdemande.employe_id,
+                    offre_id = dbdemande.offre_id,
+                    nb_a_exp = dbdemande.nb_a_exp,
+                    type_demande = dbdemande.type_demande,
+                    titre_fonction = dbdemande.titre_fonction,
+                    nature_contrat = dbdemande.nature_contrat,
+                    lien_fichier = dbdemande.lien_fichier,
+                    nom_fichier = dbdemande.nom_fichier,
+                    remarque = dbdemande.remarque,
+                    statut_chef = "Acceptée",
+                    motif_chef = NoteChef,
+                    statut_rh = dbdemande.statut_rh,
+                    motif_rh = dbdemande.motif_rh,
+                    statut_ds = dbdemande.statut_ds,
+                    motif_ds = dbdemande.motif_ds,
+                    collaborateur_remp = dbdemande.collaborateur_remp
+                };
+                UpdateDemande(demande_id, demande);
+            }
+            else
+            {
+                employe employe = _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);
+                string Subject = "Demande N° " + dbdemande.demande_id + " a été refusée  ";
+                Utilities.SendMail(employe.email, Subject, NoteChef);
+                DemandeForUpdateDto demande = new DemandeForUpdateDto
+                {
+                    employe_id = dbdemande.employe_id,
+                    offre_id = dbdemande.offre_id,
+                    nb_a_exp = dbdemande.nb_a_exp,
+                    type_demande = dbdemande.type_demande,
+                    titre_fonction = dbdemande.titre_fonction,
+                    nature_contrat = dbdemande.nature_contrat,
+                    lien_fichier = dbdemande.lien_fichier,
+                    nom_fichier = dbdemande.nom_fichier,
+                    remarque = dbdemande.remarque,
+                    statut_chef = "Refusée",
+                    motif_chef = NoteChef,
+                    statut_rh = dbdemande.statut_rh,
+                    motif_rh = dbdemande.motif_rh,
+                    statut_ds = dbdemande.statut_ds,
+                    motif_ds = dbdemande.motif_ds,
+                    collaborateur_remp = dbdemande.collaborateur_remp
+                };
+                UpdateDemande(demande_id, demande);
+            }
+            return Ok();
+        }
+
+
+
         [Route("TraiterDemandeRH/")]
         [HttpGet]
         public async Task<IActionResult> TraiterDemandeRH(int demande_id, bool Etat, string NoteRH)
@@ -387,35 +460,6 @@ namespace ProjetPFE.Controllers
             return Ok(statutDemande.ToString());
         }
 
-
-
-        [HttpGet("{TraiterDemandeChef}")]
-        public async Task<IActionResult> TraiterDemandeChef(int demande_id,bool Etat,string NoteChef)
-        {
-            var dbdemande = await _demandeRepo.GetDemande(demande_id);
-            if (dbdemande == null)
-                return NotFound();
-            if (!dbdemande.statut_chef.Equals("en attente"))
-            {
-                return BadRequest("cette demande est Déjà traitée.");
-            }
-
-            // var statutDemande = _statutService.GetStatutDemande(statutChef, statutRh, statutDs);
-            if (Etat)
-            {
-                employe employe =  _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);              
-                string Subject = "Demande N° "+ dbdemande.demande_id + " a été accepté ";
-                Utilities.SendMail(employe.email, Subject, NoteChef);
-              //  await _demandeRepo.GetDemande(demande_id);
-            }
-            else
-            {
-                employe employe = _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);
-                string Subject = "Demande N° " + dbdemande.demande_id + " a été refusé  ";
-                Utilities.SendMail(employe.email, Subject, NoteChef);
-            }
-            return Ok();
-        }
 
 
 
