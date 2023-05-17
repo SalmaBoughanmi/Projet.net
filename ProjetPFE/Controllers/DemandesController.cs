@@ -113,21 +113,24 @@ namespace ProjetPFE.Controllers
 
 
 
-        [Route("TraiterDemandeChef/")]
-        [HttpGet]
-        public async Task<IActionResult> TraiterDemandeChef(int demande_id, bool Etat, string NoteChef)
-        {
-            var dbdemande = await _demandeRepo.GetDemande(demande_id);
-            if (dbdemande == null)
-                return NotFound();
-            if (!dbdemande.statut_rh.Equals("en attente"))
-            {
-                //  return BadRequest("cette demande est Déjà traitée.");
-                return Ok("cette demande est Déjà traitée ");
-            }
+        
 
-            // var statutDemande = _statutService.GetStatutDemande(statutChef, statutRh, statutDs);
-            if (Etat)
+            [Route("TraiterDemandeChef/")]
+            [HttpGet]
+            public async Task<IActionResult> TraiterDemandeChef(int demande_id, bool Etat, string NoteChef)
+            {
+                var dbdemande = await _demandeRepo.GetDemande(demande_id);
+                if (dbdemande == null)
+                    return NotFound();
+                if (!dbdemande.statut_ds.Equals("en attente"))
+                {
+                    //  return BadRequest("cette demande est Déjà traitée.");
+                    return Ok("cette demande est Déjà traitée ");
+                }
+
+
+                // var statutDemande = _statutService.GetStatutDemande(statutChef, statutRh, statutDs);
+                if (Etat)
             {
                 employe employe = _employeRepository.GetEmployeByIdDemande(dbdemande.employe_id);
                 string Subject = "Demande N° " + dbdemande.demande_id + " a été acceptée ";
