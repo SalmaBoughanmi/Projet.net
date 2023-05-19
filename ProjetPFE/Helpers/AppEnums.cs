@@ -9,10 +9,10 @@
     }
     public enum statut
     {
-        en_cours,
-        en_attente,
-        valide,
-        refuse
+        En_cours,
+        En_attente,
+        Acceptée,
+        Refusée
 
     }
     public enum nom_role

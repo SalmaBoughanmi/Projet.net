@@ -330,7 +330,27 @@ namespace ProjetPFE.Repository
             }
         }
 
+        public async Task<IEnumerable<demande>> GetDemandeByStatutChef(string statut_chef)
+        {
+            var query = "SELECT * FROM demande WHERE statut_chef = @statut_chef";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var st = await connection.QueryAsync<demande>(query, new { statut_chef });
+                return st.ToList();
+            }
+        }
 
 
+        public async Task<IEnumerable<demande>> GetDemandeByStatutRH(string statut_rh)
+        {
+            var query = "SELECT * FROM demande WHERE statut_rh = @statut_rh";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var de = await connection.QueryAsync<demande>(query, new { statut_rh });
+                return de.ToList();
+            }
+        }
     }
 }

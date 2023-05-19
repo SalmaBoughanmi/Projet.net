@@ -9,53 +9,53 @@ namespace ProjetPFE.Repository.service
         {
             statut statut_demande;
 
-            if (statut_chef == statut.en_attente)
+            if (statut_chef == statut.En_attente)
             {
-                statut_demande = statut.en_cours;
-                statut_rh = statut.en_cours;
-                statut_ds = statut.en_cours;
+                statut_demande = statut.En_cours;
+                statut_rh = statut.En_cours;
+                statut_ds = statut.En_cours;
             }
-            else if (statut_chef == statut.valide)
+            else if (statut_chef == statut.Acceptée)
             {
-                if (statut_rh == statut.valide)
+                if (statut_rh == statut.Acceptée)
                 {
-                    if (statut_ds == statut.valide)
+                    if (statut_ds == statut.Acceptée)
                     {
-                        statut_demande = statut.valide;
+                        statut_demande = statut.Acceptée;
                     }
-                    else if (statut_ds == statut.refuse)
+                    else if (statut_ds == statut.Refusée)
                     {
-                        statut_demande = statut.refuse;
+                        statut_demande = statut.Refusée;
                     }
                     else
                     {
-                        statut_demande = statut.en_attente;
-                        statut_ds = statut.en_attente;
+                        statut_demande = statut.En_attente;
+                        statut_ds = statut.En_attente;
                     }
                 }
-                else if (statut_rh == statut.refuse)
+                else if (statut_rh == statut.Refusée)
                 {
-                    statut_demande = statut.refuse;
-                    statut_ds = statut.en_cours;
+                    statut_demande = statut.Refusée;
+                    statut_ds = statut.En_cours;
                 }
                 
                 else
                 {
-                    statut_demande = statut.en_attente;
-                    statut_rh = statut.en_attente;
-                    statut_ds = statut.en_cours;
+                    statut_demande = statut.En_attente;
+                    statut_rh = statut.En_attente;
+                    statut_ds = statut.En_cours;
                 }
 
             }
-            else if (statut_chef == statut.en_cours && statut_rh == statut.en_cours && statut_ds == statut.en_cours)
+            else if (statut_chef == statut.En_cours && statut_rh == statut.En_cours && statut_ds == statut.En_cours)
             {
-                statut_demande = statut.en_cours;
+                statut_demande = statut.En_cours;
             }
             else // statut_chef == statut.refuse
             {
-                statut_demande = statut.refuse;
-                statut_rh = statut.en_cours;
-                statut_ds = statut.en_cours;
+                statut_demande = statut.Refusée;
+                statut_rh = statut.En_cours;
+                statut_ds = statut.En_cours;
             }
             
 

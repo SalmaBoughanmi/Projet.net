@@ -482,6 +482,38 @@ namespace ProjetPFE.Controllers
         }
 
 
+        [Route("statut_chef/")]
+        [HttpGet]
+        public async Task<IActionResult> GetDemandeByStatutChef(string statut_chef)
+        {
+            var st = await _demandeRepo.GetDemandeByStatutChef(statut_chef);
+
+            if (st == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(st);
+        }
+
+
+
+
+
+        [Route("statut_rh/")]
+        [HttpGet]
+        public async Task<IActionResult> GetDemandeByStatutRH(string statut_rh)
+        {
+            var de = await _demandeRepo.GetDemandeByStatutRH(statut_rh);
+
+            if (de == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(de);
+        }
+
 
 
 
