@@ -13,7 +13,7 @@ namespace ProjetPFE.Dto
         public DateTime date_recrutement { get; set; }
         public string? email { get; set; }
         public string? password { get; set; }
-        public string? compte_winds { get; set; }
+        
         //public ICollection<diplome>? diplomes { get; set; }
         //public ICollection<experience>? experiences { get; set; }
         //public ICollection<certification>? certifications { get; set; }

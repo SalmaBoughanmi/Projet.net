@@ -32,7 +32,7 @@ namespace ProjetPFE.Repository
         public async Task<ICollection<employe>> Getemployes()
         {
             var query = "SELECT employe.employe_id, employe.nom, employe.prenom, employe.matricule, employe.matricule_resp, employe.fonction, " +
-            "employe.role, employe.date_recrutement, employe.email, employe.password, employe.compte_winds, diplome.diplome_id as diplome_id , " +
+            "employe.role, employe.date_recrutement, employe.email, employe.password, diplome.diplome_id as diplome_id , " +
             "diplome.nom_diplome, diplome.lieu_diplome, diplome.employe_id, experience.experience_id as experience_id , experience.poste, " +
             "experience.entreprise, experience.date_debut, experience.date_fin, experience.employe_id, certification.certif_id as certif_id, " +
             "certification.nom_certif, certification.employe_id, technologie.techno_id as techno_id, technologie.nom_techno, technologie.employe_id  " +
@@ -74,7 +74,7 @@ namespace ProjetPFE.Repository
         public async Task<employe> GetEmployeByIdAsync(int id)
         {
             var query = @"SELECT employe.employe_id, employe.nom, employe.prenom, employe.matricule, employe.matricule_resp, 
-                  employe.fonction, employe.role, employe.date_recrutement, employe.email, employe.password, employe.compte_winds, 
+                  employe.fonction, employe.role, employe.date_recrutement, employe.email, employe.password, 
                   diplome.diplome_id as diplome_id , diplome.nom_diplome, diplome.lieu_diplome, diplome.employe_id, 
                   experience.experience_id as experience_id , experience.poste, experience.entreprise, experience.date_debut, 
                   experience.date_fin, experience.employe_id, certification.certif_id as certif_id, certification.nom_certif, 
@@ -438,7 +438,7 @@ namespace ProjetPFE.Repository
         public async Task<employe> GetEmployeByEmailAsync(string email)
         {
             var query = @"SELECT employe.employe_id, employe.nom, employe.prenom, employe.matricule, employe.matricule_resp, 
-                  employe.fonction, employe.role, employe.date_recrutement, employe.email, employe.password, employe.compte_winds, 
+                  employe.fonction, employe.role, employe.date_recrutement, employe.email, employe.password, 
                   diplome.diplome_id as diplome_id , diplome.nom_diplome, diplome.lieu_diplome, diplome.employe_id, 
                   experience.experience_id as experience_id , experience.poste, experience.entreprise, experience.date_debut, 
                   experience.date_fin, experience.employe_id, certification.certif_id as certif_id, certification.nom_certif, 
@@ -560,8 +560,8 @@ namespace ProjetPFE.Repository
 
         public async Task<int> AddEmploye(EmployeForCreationDto emp)
         {
-            var sql = @"INSERT INTO [dbo].[employe] (nom, prenom, matricule, matricule_resp, fonction, role, date_recrutement, email, password, compte_winds)
-            VALUES (@nom, @prenom, @matricule, @matricule_resp, @fonction, @role, @date_recrutement, @email, @password, @compte_winds);
+            var sql = @"INSERT INTO [dbo].[employe] (nom, prenom, matricule, matricule_resp, fonction, role, date_recrutement, email, password)
+            VALUES (@nom, @prenom, @matricule, @matricule_resp, @fonction, @role, @date_recrutement, @email, @password);
             SELECT CAST(SCOPE_IDENTITY() as int)";
 
             string hashedPassword = GenerateSha256Hash(emp.password);
@@ -584,8 +584,7 @@ namespace ProjetPFE.Repository
                             emp.role,
                             emp.date_recrutement,
                             emp.email,
-                            password,
-                            emp.compte_winds
+                            password
                         }, transaction);
 
 
@@ -633,7 +632,7 @@ namespace ProjetPFE.Repository
 
             var sql = @"UPDATE employe " +
                     "SET nom = @nom, prenom = @prenom, matricule = @matricule, matricule_resp = @matricule_resp, fonction = @fonction, " +
-                    "role = @role, date_recrutement = @date_recrutement, email = @email, password = @password, compte_winds = @compte_winds " +
+                    "role = @role, date_recrutement = @date_recrutement, email = @email, password = @password " +
                     "WHERE employe_id = @employe_id";
 
             string hashedPassword = GenerateSha256Hash(emp.password);
@@ -657,7 +656,6 @@ namespace ProjetPFE.Repository
                             emp.date_recrutement,
                             emp.email,
                             password,
-                            emp.compte_winds,
                             emp.employe_id
                         }, transaction);
 

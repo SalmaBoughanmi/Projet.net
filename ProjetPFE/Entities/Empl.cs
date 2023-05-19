@@ -27,6 +27,6 @@ namespace ProjetPFE.Entities
 
         public string password { get; set; }
 
-        public string? compte_winds { get; set; }
+       
     }
 }

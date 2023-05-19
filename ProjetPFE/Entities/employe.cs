@@ -27,7 +27,6 @@ public class employe
 
     public string password { get; set; }
 
-    public string? compte_winds { get; set; }
 
     public ICollection<diplome>? diplomes { get; set; }
 
