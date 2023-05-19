@@ -35,6 +35,7 @@ public class employe
     public ICollection<certification>? certifications { get; set; }
 
     public ICollection<technologie>? technologies { get; set; }
+    public ICollection<demande>? demandes { get; set; }
 
 
 

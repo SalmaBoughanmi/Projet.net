@@ -71,6 +71,18 @@ namespace ProjetPFE.Repository
 
 
 
+
+
+      
+      
+
+
+
+
+
+
+
+
         public async Task<employe> GetEmployeByIdAsync(int id)
         {
             var query = @"SELECT employe.employe_id, employe.nom, employe.prenom, employe.matricule, employe.matricule_resp, 
@@ -78,12 +90,16 @@ namespace ProjetPFE.Repository
                   diplome.diplome_id as diplome_id , diplome.nom_diplome, diplome.lieu_diplome, diplome.employe_id, 
                   experience.experience_id as experience_id , experience.poste, experience.entreprise, experience.date_debut, 
                   experience.date_fin, experience.employe_id, certification.certif_id as certif_id, certification.nom_certif, 
-                  certification.employe_id, technologie.techno_id as techno_id, technologie.nom_techno, technologie.employe_id  
+                  certification.employe_id, technologie.techno_id as techno_id, technologie.nom_techno, technologie.employe_id,
+demande.demande_id as demande_id, demande.offre_id, demande.employe_id, demande.nb_a_exp, demande.type_demande , demande.titre_fonction, demande.nature_contrat, 
+demande.lien_fichier, demande.nom_fichier, demande.remarque, demande.statut_chef, demande.statut_rh, demande.statut_ds, demande.motif_chef,
+ demande.motif_rh, demande.motif_ds, demande.affectation
                   FROM [dbo].[employe] as employe 
                   LEFT JOIN [dbo].[diplome] as diplome ON employe.employe_id = diplome.employe_id 
                   LEFT JOIN [dbo].[certification] as certification ON employe.employe_id = certification.employe_id 
                   LEFT JOIN [dbo].[experience] as experience ON employe.employe_id = experience.employe_id 
                   LEFT JOIN [dbo].[technologie] as technologie ON employe.employe_id = technologie.employe_id
+                  LEFT JOIN [dbo].[demande] as demande ON employe.employe_id = demande.employe_id
                   WHERE employe.employe_id = @id";
 
 
@@ -91,9 +107,9 @@ namespace ProjetPFE.Repository
             using (var _context = this._context.CreateConnection())
             {
                 var employeDict = new Dictionary<int, employe>();
-                var employeList = await _context.QueryAsync<employe, diplome, experience, certification, technologie, employe>(
+                var employeList = await _context.QueryAsync<employe, diplome, experience, certification, technologie, demande, employe>(
                     query,
-                    (emp, dip, exp, cert, tech) =>
+                    (emp, dip, exp, cert, tech, dem) =>
                     {
                         if (!employeDict.TryGetValue(emp.employe_id, out employe employe))
                         {
@@ -102,6 +118,7 @@ namespace ProjetPFE.Repository
                             employe.experiences = new List<experience>();
                             employe.certifications = new List<certification>();
                             employe.technologies = new List<technologie>();
+                            employe.demandes = new List<demande>();
                             employeDict.Add(employe.employe_id, employe);
                         }
 
@@ -125,10 +142,16 @@ namespace ProjetPFE.Repository
                             employe.technologies.Add(tech);
                         }
 
+
+                        if (dem != null && !employe.demandes.Any(d => d.demande_id == dem.demande_id))
+                        {
+                            employe.demandes.Add(dem);
+                        }
+
                         return employe;
                     },
                     new { id },
-                    splitOn: "diplome_id, experience_id, certif_id, techno_id");
+                    splitOn: "diplome_id, experience_id, certif_id, techno_id, demande_id");
 
                 return employeList.FirstOrDefault();
             }
@@ -423,14 +446,17 @@ namespace ProjetPFE.Repository
                    query = "DELETE FROM technologie WHERE techno_id = @techno_id";
                    await _context.ExecuteAsync(query, new { techno_id = tech.techno_id });
                }
+                foreach (demande dem in existingEmploye.Result.demandes)
+                {
+                    query = "DELETE FROM demande WHERE demande_id = @demande_id";
+                    await _context.ExecuteAsync(query, new { demande_id = dem.demande_id });
+                }
 
-               query = "DELETE FROM employe WHERE employe_id = @employeId";
+                query = "DELETE FROM employe WHERE employe_id = @employeId";
                int rowsAffected = await _context.ExecuteAsync(query, new { employeId = id });
                 return 1;
             }
         }
-
-
 
 
 
