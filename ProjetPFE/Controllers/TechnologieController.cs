@@ -67,7 +67,8 @@ namespace ProjetPFE.Controllers
             try
             {
                 var createdtechno = await _TechnologieRepo.CreateTechnologie(technologie);
-                return CreatedAtRoute("technoById", new { techno_id = createdtechno.techno_id }, createdtechno);
+                //return CreatedAtRoute("technoById", new { techno_id = createdtechno.techno_id }, createdtechno);
+                return Ok();
             }
             catch (Exception ex)
             {

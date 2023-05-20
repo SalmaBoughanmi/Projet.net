@@ -67,7 +67,8 @@ namespace ProjetPFE.Controllers
             try
             {
                 var createdexp = await _ExperienceRepo.CreateExperience(experience);
-                return CreatedAtRoute("experienceById", new { experience_id = createdexp.experience_id }, createdexp);
+                //return CreatedAtRoute("experienceById", new { experience_id = createdexp.experience_id }, createdexp);
+                return Ok();
             }
             catch (Exception ex)
             {

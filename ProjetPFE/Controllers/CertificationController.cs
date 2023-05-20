@@ -67,7 +67,8 @@ namespace ProjetPFE.Controllers
             try
             {
                 var createdcertif = await _CertificationRepo.CreateCertification(certification);
-                return CreatedAtRoute("certifById", new { certif_id = createdcertif.certif_id }, createdcertif);
+                //return CreatedAtRoute("certifById", new { certif_id = createdcertif.certif_id }, createdcertif);
+                return Ok();
             }
             catch (Exception ex)
             {

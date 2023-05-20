@@ -53,7 +53,7 @@ namespace ProjetPFE.Repository
 
         public async Task<experience> CreateExperience(ExperienceForCreationDto experience)
         {
-            var query = "INSERT INTO certification (employe_id, poste, entreprise, date_debut, date_fin) " +
+            var query = "INSERT INTO experience (employe_id, poste, entreprise, date_debut, date_fin) " +
                 "VALUES ( @employe_id, @poste, @entreprise, @date_debut, @date_fin) SELECT CAST(SCOPE_IDENTITY() as int)";
 
             var parameters = new DynamicParameters();

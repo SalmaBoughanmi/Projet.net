@@ -68,7 +68,8 @@ namespace ProjetPFE.Controllers
                 try
                 {
                     var createddip = await _DiplomeRepo.CreateDiplome(diplome);
-                    return CreatedAtRoute("diplomeById", new { diplome_id = createddip.diplome_id }, createddip);
+                    //return CreatedAtRoute("diplomeById", new { diplome_id = createddip.diplome_id }, createddip);
+                    return Ok();
                 }
                 catch (Exception ex)
                 {
