@@ -122,7 +122,7 @@ namespace ProjetPFE.Controllers
                 var dbdemande = await _demandeRepo.GetDemande(demande_id);
                 if (dbdemande == null)
                     return NotFound();
-                if (!dbdemande.statut_ds.Equals("en attente"))
+                if (!dbdemande.statut_ds.Equals("En attente"))
                 {
                     //  return BadRequest("cette demande est Déjà traitée.");
                     return Ok("cette demande est Déjà traitée ");
@@ -196,7 +196,7 @@ namespace ProjetPFE.Controllers
             var dbdemande = await _demandeRepo.GetDemande(demande_id);
             if (dbdemande == null)
                 return NotFound();
-            if (!dbdemande.statut_rh.Equals("en attente"))
+            if (!dbdemande.statut_rh.Equals("En attente"))
             {
                 //  return BadRequest("cette demande est Déjà traitée.");
                 return Ok("cette demande est Déjà traitée ");
@@ -269,7 +269,7 @@ namespace ProjetPFE.Controllers
             var dbdemande = await _demandeRepo.GetDemande(demande_id);
             if (dbdemande == null)
                 return NotFound();
-            if (!dbdemande.statut_ds.Equals("en attente"))
+            if (!dbdemande.statut_ds.Equals("En attente"))
             {
                 //  return BadRequest("cette demande est Déjà traitée.");
                 return Ok("cette demande est Déjà traitée ");
