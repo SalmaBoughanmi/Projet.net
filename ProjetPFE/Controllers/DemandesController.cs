@@ -78,19 +78,19 @@ namespace ProjetPFE.Controllers
 
 
 
+        [Route("Demande_id/")]
+        [HttpGet]
+        public async Task<ActionResult<demande>> GetDemande(int demande_id)
+        {
+            var demande = await _demandeRepo.GetDemande(demande_id);
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<demande>> Getdem(int id)
-        //{
-        //    var demande = await _demandeRepo.Getdem(id);
+            if (demande == null)
+            {
+                return NotFound();
+            }
 
-        //    if (demande == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return demande;
-        //}
+            return Ok(demande);
+        }
 
 
 
