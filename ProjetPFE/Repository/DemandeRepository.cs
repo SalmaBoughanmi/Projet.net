@@ -278,6 +278,29 @@ namespace ProjetPFE.Repository
 
 
 
+        //public List<demande> GetDemandesByResponsable(string matricule_resp)
+        //{
+        //    using (var connection = _context.CreateConnection())
+        //    {
+        //        // Récupérer l'employé connecté en fonction de son matricule
+        //        employe responsable = connection.QueryFirstOrDefault<employe>("SELECT * FROM employe WHERE matricule = @matricule", new { matricule = matricule_resp });
+
+        //        if (responsable == null)
+        //        {
+        //            throw new Exception("Employé non trouvé !");
+        //        }
+
+        //        // Récupérer les demandes des employés dont le responsable est l'utilisateur connecté
+        //        string query = "SELECT * FROM demande WHERE demande_id  IN (SELECT demande_id FROM employe WHERE matricule_resp = @matricule_resp)";
+        //        List<demande> demandes = connection.Query<demande>(query, new { matricule_resp = responsable.matricule }).ToList();
+
+        //        return demandes;
+        //    }
+        //}
+
+
+
+
         public List<demande> GetDemandesByResponsable(string matricule_resp)
         {
             using (var connection = _context.CreateConnection())
@@ -291,7 +314,7 @@ namespace ProjetPFE.Repository
                 }
 
                 // Récupérer les demandes des employés dont le responsable est l'utilisateur connecté
-                string query = "SELECT * FROM demande WHERE demande_id  IN (SELECT demande_id FROM employe WHERE matricule_resp = @matricule_resp)";
+                string query = "SELECT * FROM demande WHERE employe_id  IN (SELECT employe_id FROM employe WHERE matricule_resp = @matricule_resp)";
                 List<demande> demandes = connection.Query<demande>(query, new { matricule_resp = responsable.matricule }).ToList();
 
                 return demandes;
