@@ -113,7 +113,7 @@ namespace ProjetPFE.Controllers
                 if (dbcertif == null)
                     return NotFound();
 
-                await _CertificationRepo.GetCertification(certif_id);
+                await _CertificationRepo.DeleteCertification(certif_id);
                 return NoContent();
             }
             catch (Exception ex)

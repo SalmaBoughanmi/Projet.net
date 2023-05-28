@@ -701,6 +701,30 @@ demande.lien_fichier, demande.nom_fichier, demande.remarque, demande.statut_chef
 
 
 
+        public async Task<IEnumerable<employe>> SearchempAsync(string search)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var sql = @"
+            SELECT * FROM employe
+            WHERE LOWER(nom) LIKE '%' + @search + '%'
+            OR LOWER(prenom) LIKE '%' + @search + '%'
+            OR LOWER(matricule) LIKE '%' + @search + '%'
+            OR LOWER(matricule_resp) LIKE '%' + @search + '%'
+            OR LOWER(fonction) LIKE '%' + @search + '%'
+            OR LOWER(date_recrutement) LIKE '%' + @search + '%'
+            OR LOWER(email) LIKE '%' + @search + '%'
+            ORDER BY employe_id DESC;
+        ";
+
+                var result = await connection.QueryAsync<employe>(
+                    sql,
+                    new { search = search.ToLower() });
+
+                return result;
+            }
+        }
+
 
 
 

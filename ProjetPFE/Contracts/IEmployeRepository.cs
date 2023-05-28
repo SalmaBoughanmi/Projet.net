@@ -15,6 +15,7 @@ namespace ProjetPFE.Contracts
         Task<int> AddEmploye(EmployeForCreationDto employe);
         Task<int> UpdateEmployeAsync(Empl employe);
         employe GetEmployeByIdDemande(int id);
+        Task<IEnumerable<employe>> SearchempAsync(string search);
         //public Task DeleteEmploye(int employe_id);
 
         //public Task<employe> CreateEmploye(EmployeForCreationDto employe);

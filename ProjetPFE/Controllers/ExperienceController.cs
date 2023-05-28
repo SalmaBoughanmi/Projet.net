@@ -113,7 +113,7 @@ namespace ProjetPFE.Controllers
                 if (dbexp == null)
                     return NotFound();
 
-                await _ExperienceRepo.GetExperience(experience_id);
+                await _ExperienceRepo.DeleteExperience(experience_id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -122,6 +122,10 @@ namespace ProjetPFE.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+
+
+       
 
 
 

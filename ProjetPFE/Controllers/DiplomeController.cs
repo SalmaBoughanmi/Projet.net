@@ -114,7 +114,7 @@ namespace ProjetPFE.Controllers
                     if (dbdip == null)
                         return NotFound();
 
-                    await _DiplomeRepo.GetDiplome(diplome_id);
+                    await _DiplomeRepo.DeleteDiplome(diplome_id);
                     return NoContent();
                 }
                 catch (Exception ex)

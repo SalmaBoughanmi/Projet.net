@@ -113,7 +113,7 @@ namespace ProjetPFE.Controllers
                 if (dbtechno == null)
                     return NotFound();
 
-                await _TechnologieRepo.GetTechnologie(techno_id);
+                await _TechnologieRepo.DeleteTechnologie(techno_id);
                 return NoContent();
             }
             catch (Exception ex)

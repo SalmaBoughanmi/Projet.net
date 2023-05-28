@@ -180,6 +180,20 @@ namespace ProjetPFE.Controllers
         }
 
 
+        [Route("SearchEmployee/{search}")]
+        [HttpGet]
+        public async Task<IEnumerable<employe>?> Searchemp(string search)
+        {
+            if (search == null || string.IsNullOrEmpty(search))
+            {
+                return null;
+            }
+
+            var result = await _employeRepository.SearchempAsync(search);
+
+            return result;
+        }
+
 
 
         //[HttpPost]
